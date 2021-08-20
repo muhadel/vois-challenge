@@ -5,7 +5,4 @@ export interface IUser {
   readonly password: string;
   createdAt?: Date;
   updatedAt?: Date;
-
-  //  generateAuthToken(): string;
-  // validatePassword(password: string): Boolean;
 }

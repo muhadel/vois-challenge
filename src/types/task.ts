@@ -1,8 +1,8 @@
 export enum ETaskStatus {
-  todo = 1,
-  inprogress = 2,
-  inQA = 3,
-  done = 4,
-  deployed = 5,
-  blocked = 6,
+  todo = 'todo',
+  inprogress = 'inprogress',
+  inQA = 'inQA',
+  done = 'done',
+  deployed = 'deployed',
+  blocked = 'blocked',
 }

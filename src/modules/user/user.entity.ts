@@ -29,6 +29,7 @@ export class User extends BaseEntity {
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
+    select: false,
   })
   public createdAt: Date;
 
@@ -36,6 +37,7 @@ export class User extends BaseEntity {
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
+    select: false,
   })
   public updatedAt: Date;
 

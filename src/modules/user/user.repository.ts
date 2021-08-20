@@ -21,6 +21,10 @@ export class UserRepository extends Repository<User> {
     return this.findOne(condition, options);
   }
 
+  public async findUserById(userId: number): Promise<User> {
+    return this.findOne(userId);
+  }
+
   public async findAllUsers(): Promise<User[]> {
     return this.find({});
   }

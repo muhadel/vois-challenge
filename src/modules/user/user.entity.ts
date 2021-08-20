@@ -3,7 +3,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  BeforeInsert,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -39,13 +38,9 @@ export class User extends BaseEntity {
   })
   public updatedAt: Date;
 
-  @BeforeInsert()
-  hashPassword() {
-    this['password'] = bcrypt.hashSync(
-      this['password'],
-      bcrypt.genSaltSync(config.salt),
-    );
-  }
+  public static hashPassword = (password: string) => {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(config.salt));
+  };
 
   public generateAuthToken = () => {
     return jwt.sign(

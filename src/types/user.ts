@@ -6,6 +6,6 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
 
-  generateAuthToken(): string;
-  validatePassword(password: string): Boolean;
+  //  generateAuthToken(): string;
+  // validatePassword(password: string): Boolean;
 }

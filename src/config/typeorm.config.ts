@@ -7,6 +7,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: process.env.RDS_USERNAME || '',
   password: process.env.RDS_PASSWORD || '',
   database: process.env.RDS_DB_NAME || '',
-  entities: [__dirname + '/../**/*.entity.ts'],
+  entities: [__dirname + '/../**/**/*.entity.{ts,js}'],
   synchronize: Boolean(process.env.TYPEORM_SYNC) || false,
 };

@@ -1,19 +1,27 @@
-import { Repository, EntityRepository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import {
+  Repository,
+  EntityRepository,
+  FindOneOptions,
+  FindConditions,
+} from 'typeorm';
+// import { Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 
-@Injectable()
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async createUser(user: User): Promise<User> {
-    return await this.create(user).save();
+  async createUser(user): Promise<User> {
+    const hashedPassword = User.hashPassword(user.password);
+    return await this.save({ ...user, password: hashedPassword });
   }
 
-  public async findById(userId: number): Promise<User> {
-    return await this.findOne(userId);
+  public async findOneUser(
+    condition: FindConditions<User>,
+    options: FindOneOptions,
+  ): Promise<User> {
+    return this.findOne(condition, options);
   }
 
-  public async findAll(): Promise<User[]> {
-    return await this.find({});
+  public async findAllUsers(): Promise<User[]> {
+    return this.find({});
   }
 }

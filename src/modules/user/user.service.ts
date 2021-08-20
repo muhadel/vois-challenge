@@ -1,15 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
+import { FindConditions, FindOneOptions } from 'typeorm';
+
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(UserRepository)
+    private readonly userRepository: UserRepository,
+  ) {}
 
-  async create(user: User) {
-    return this.userRepository.create(user);
+  async create(user) {
+    return this.userRepository.createUser(user);
   }
 
-  async findOneById(userId: number) {
-    return await this.userRepository.findById(userId);
+  async findOne(
+    conditions: FindConditions<User>,
+    options?: FindOneOptions<User>,
+  ): Promise<User> {
+    return await this.userRepository.findOneUser(conditions, options);
+  }
+
+  async findAll() {
+    return await this.userRepository.findAllUsers();
   }
 }

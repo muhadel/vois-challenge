@@ -15,6 +15,10 @@ export class UserService {
     return this.userRepository.createUser(user);
   }
 
+  async findUserById(userId: number) {
+    return this.userRepository.findUserById(userId);
+  }
+
   async findOne(
     conditions: FindConditions<User>,
     options?: FindOneOptions<User>,

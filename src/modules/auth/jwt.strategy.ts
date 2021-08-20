@@ -15,20 +15,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IJwtPayload, done: VerifiedCallback) {
-    const { email } = payload;
-    console.log('validate', payload);
-
-    // const user = await this.userRepository.findOne(
-    //   { email },
-    //   { email: 1, name: 1 },
-    // );
-
-    // if (!user) {
-    //   return done(
-    //     new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED),
-    //     false,
-    //   );
-    // }
-    // return done(null, user, payload.iat);
+    const userId = parseInt(payload.id);
+    const user = await this.userRepository.findUserById(userId);
+    if (!user) {
+      return done(new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED), false);
+    }
+    return done(null, user, payload.iat);
   }
 }

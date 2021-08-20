@@ -38,6 +38,9 @@ The main idea of the task is to build an application to manage working tasks.
    - types/
    - utilities/
    - modules/
+      - auth/
+      - user/
+      - task/
 ```
 
 ## How to Install
@@ -70,4 +73,4 @@ $ npm run test:e2e
 
 ## Swagger Documentation
 
-You can access Swagger documentation via [http://localhost:5000/api/](http://localhost:5000/api/)
+You can access Swagger documentation via [http://localhost:5000/swagger/](http://localhost:5000/swagger/)

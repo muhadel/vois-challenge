@@ -7,6 +7,7 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { TaskModule } from './modules/task/task.module';
+import { TaskHistoryModule } from './modules/task-history/task-history.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { TaskModule } from './modules/task/task.module';
     AuthModule,
     UserModule,
     TaskModule,
+    TaskHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

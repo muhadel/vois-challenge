@@ -41,6 +41,7 @@ The main idea of the task is to build an application to manage working tasks.
       - auth/
       - user/
       - task/
+      - task-history/
 ```
 
 ## How to Install

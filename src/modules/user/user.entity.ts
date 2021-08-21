@@ -12,6 +12,8 @@ import * as jwt from 'jsonwebtoken';
 import { jwtConfig } from '../../config/jwt.config';
 import { config } from '../../config/app.config';
 import { Task } from '../task/task.entity';
+import { TaskHistory } from '../task-history/task-history.entity';
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -43,6 +45,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Task, (task) => task.creator)
   tasks: Task[];
+
+  @OneToMany(() => TaskHistory, (history) => history.user)
+  history: TaskHistory[];
 
   public static hashPassword = (password: string) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(config.salt));

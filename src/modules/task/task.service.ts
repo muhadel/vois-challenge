@@ -87,7 +87,10 @@ export class TaskService {
     return this.taskRepository.findAllTasks();
   }
 
-  isStatusAcceptable(oldStatus: ETaskStatus, newStatus: ETaskStatus): Boolean {
+  private isStatusAcceptable(
+    oldStatus: ETaskStatus,
+    newStatus: ETaskStatus,
+  ): Boolean {
     const flow = {
       todo: { inprogress: true },
       inprogress: { blocked: true, inQA: true },
@@ -95,12 +98,6 @@ export class TaskService {
       inQA: { todo: true, done: true },
       done: { deployed: true },
     };
-    console.log(
-      'Flow',
-      flow[oldStatus],
-      flow[oldStatus].hasOwnProperty(newStatus),
-    );
-
     if (flow[oldStatus].hasOwnProperty(newStatus)) {
       return true;
     }

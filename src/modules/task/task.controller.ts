@@ -33,11 +33,15 @@ export class TaskController {
     return this.taskService.createTask(createTaskRequestDto, id);
   }
 
-  @Put()
+  @Put(':id')
+  @ApiParam({ name: 'id' })
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Update task status' })
-  updateTaskStatus(@Body() updateTaskStatusDto: UpdateTaskStatusDto, @GetUser() userDto: User): Promise<Task> {
-    return this.taskService.updateTaskStatus(updateTaskStatusDto, userDto);
+  updateTaskStatus(
+    @Param() { id }: FindOneParams,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+    @GetUser() userDto: User): Promise<Task> {
+    return this.taskService.updateTaskStatus(parseInt(id), updateTaskStatusDto, userDto);
   }
 
   @Put('/assign/:id')

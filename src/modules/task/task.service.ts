@@ -33,8 +33,8 @@ export class TaskService {
     return taskCreated;
   }
 
-  async updateTaskStatus(UpdateTaskStatusDto: UpdateTaskStatusDto, userDto: User): Promise<Task> {
-    const { taskId, status } = UpdateTaskStatusDto;
+  async updateTaskStatus(taskId:number, UpdateTaskStatusDto: UpdateTaskStatusDto, userDto: User): Promise<Task> {
+    const { status } = UpdateTaskStatusDto;
     const task = await this.taskRepository.findTaskById(taskId);
     if (!task) {
       throw new HttpException('Task is not exists!', HttpStatus.BAD_REQUEST);

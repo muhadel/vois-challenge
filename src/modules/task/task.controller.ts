@@ -8,11 +8,12 @@ import {
   Param,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiParam, ApiOperation } from '@nestjs/swagger';
 import { GetUser } from '../../utilities/user.decorator';
 import { TaskService } from './task.service';
 import { User } from '../user/user.entity';
 import { Task } from './task.entity';
+import { TaskHistory } from '../task-history/task-history.entity';
 import {
   CreateTaskRequestDto,
   UpdateTaskStatusDto,
@@ -27,6 +28,7 @@ export class TaskController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Create new task' })
   createTask(
     @Body() createTaskRequestDto: CreateTaskRequestDto,
     @GetUser() { id }: User,
@@ -36,6 +38,7 @@ export class TaskController {
 
   @Put()
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Update task status' })
   updateTaskStatus(
     @Body() updateTaskStatusDto: UpdateTaskStatusDto,
     @GetUser() userDto: User,
@@ -45,6 +48,7 @@ export class TaskController {
 
   @Put('/assign/:id')
   @ApiParam({ name: 'id' })
+  @ApiOperation({ summary: 'Assign task to user' })
   @UseGuards(AuthGuard('jwt'))
   assignTask(
     @Param() { id }: FindOneParams,
@@ -56,7 +60,16 @@ export class TaskController {
     );
   }
 
-  @Get('/all')
+  @Get('/history/:id')
+  @ApiParam({ name: 'id' })
+  @ApiOperation({ summary: 'Get task history by task Id' })
+  @UseGuards(AuthGuard('jwt'))
+  getTaskHistory(@Param() { id }: FindOneParams): Promise<TaskHistory[]> {
+    return this.taskService.getTaskHistory(parseInt(id));
+  }
+
+  @Get('/')
+  @ApiOperation({ summary: 'Get all tasks' })
   @UseGuards(AuthGuard('jwt'))
   getAllTasks(): Promise<Task[]> {
     return this.taskService.getAllTasks();

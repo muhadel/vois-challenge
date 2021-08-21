@@ -3,6 +3,7 @@ import { UserService } from '../user/user.service';
 import { TaskHistoryService } from '../task-history/task-history.service';
 import { Task } from './task.entity';
 import { User } from '../user/user.entity';
+import { TaskHistory } from '../task-history/task-history.entity';
 import { TaskRepository } from './task.repository';
 import {
   CreateTaskRequestDto,
@@ -89,7 +90,7 @@ export class TaskService {
   async updateTaskAssignee(
     taskId: number,
     updateTaskAssigneeDto: UpdateTaskAssigneeDto,
-  ): Promise<any> {
+  ): Promise<Task> {
     const { assignee } = updateTaskAssigneeDto;
     const task = await this.taskRepository.findTaskById(taskId);
     if (!task) {
@@ -97,9 +98,13 @@ export class TaskService {
     }
     // update task status
     const updatedTask = await this.taskRepository.updateTask(taskId, {
-      assignee,
+      assignee: { id: assignee },
     });
     return updatedTask;
+  }
+
+  async getTaskHistory(taskId: number): Promise<TaskHistory[]> {
+    return await this.taskHistoryService.getHistoryByTaskId(taskId);
   }
 
   async getAllTasks(): Promise<Task[]> {

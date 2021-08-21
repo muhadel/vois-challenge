@@ -12,4 +12,8 @@ export class TaskHistoryRepository extends Repository<TaskHistory> {
   async createHistory(history: TaskHistoryDto): Promise<TaskHistory> {
     return await this.save(history);
   }
+
+  async getHistoryByTaskId(taskId: number): Promise<TaskHistory[]> {
+    return await this.find({ task: { id: taskId } });
+  }
 }

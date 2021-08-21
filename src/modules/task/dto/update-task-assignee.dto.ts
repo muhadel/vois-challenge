@@ -6,5 +6,5 @@ export class UpdateTaskAssigneeDto {
   @IsDefined()
   @IsNumber()
   @ApiProperty()
-  assignee: User;
+  assignee: number;
 }

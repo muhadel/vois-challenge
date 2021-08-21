@@ -10,4 +10,8 @@ export class TaskHistoryService {
   async createHistory(history: TaskHistoryDto): Promise<TaskHistory> {
     return this.taskHistoryRepository.createHistory(history);
   }
+
+  async getHistoryByTaskId(taskId: number): Promise<TaskHistory[]> {
+    return this.taskHistoryRepository.getHistoryByTaskId(taskId);
+  }
 }

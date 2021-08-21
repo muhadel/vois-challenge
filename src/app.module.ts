@@ -8,6 +8,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { TaskModule } from './modules/task/task.module';
 import { TaskHistoryModule } from './modules/task-history/task-history.module';
+import { DatabaseModule } from './modules/database/database.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TaskHistoryModule } from './modules/task-history/task-history.module';
     UserModule,
     TaskModule,
     TaskHistoryModule,
+    DatabaseModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -42,7 +42,7 @@ export class TaskController {
 
   @Put('/assign/:id')
   @ApiParam({ name: 'id' })
-  @ApiOperation({ summary: 'Assign task to user' })
+  @ApiOperation({ summary: 'Assign task to user by task id' })
   @UseGuards(AuthGuard('jwt'))
   assignTask(@Param() { id }: FindOneParams, @Body() updateTaskAssigneeDto: UpdateTaskAssigneeDto): Promise<Task> {
     return this.taskService.updateTaskAssignee(parseInt(id),updateTaskAssigneeDto);
@@ -50,7 +50,7 @@ export class TaskController {
 
   @Get('/history/:id')
   @ApiParam({ name: 'id' })
-  @ApiOperation({ summary: 'Get task history by task Id' })
+  @ApiOperation({ summary: 'Get task history by task id' })
   @UseGuards(AuthGuard('jwt'))
   getTaskHistory(@Param() { id }: FindOneParams): Promise<TaskHistory[]> {
     return this.taskService.getTaskHistory(parseInt(id));

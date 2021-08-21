@@ -7,6 +7,7 @@ import {
   SigninResponseDto,
 } from './dto';
 import { User } from '../user/user.entity';
+
 @Injectable()
 export class AuthService {
   private static readonly tokenType = 'Bearer';
@@ -20,7 +21,6 @@ export class AuthService {
     }
     // Create User
     const userCreated = await this.userService.create(signupRequestDto);
-    console.log('userCreated', userCreated);
     return {
       message: 'Successfully created!',
       data: {
@@ -44,6 +44,8 @@ export class AuthService {
     const accessToken = user.generateAuthToken();
     return { tokenType: AuthService.tokenType, accessToken };
   }
+
+
   async findAll(): Promise<User[]> {
     return await this.userService.findAll();
   }

@@ -5,13 +5,13 @@ import { Task } from './task.entity';
 import { User } from '../user/user.entity';
 import { TaskHistory } from '../task-history/task-history.entity';
 import { TaskRepository } from './task.repository';
+import { TaskHistoryDto } from '../task-history/dto';
+import { ETaskStatus } from 'src/types/task';
 import {
   CreateTaskRequestDto,
   UpdateTaskStatusDto,
   UpdateTaskAssigneeDto,
 } from './dto';
-import { TaskHistoryDto } from '../task-history/dto';
-import { ETaskStatus } from 'src/types/task';
 
 @Injectable()
 export class TaskService {
@@ -67,7 +67,7 @@ export class TaskService {
     if (!task) {
       throw new HttpException('Task is not exists!', HttpStatus.BAD_REQUEST);
     }
-    // update task status
+    // update task assignee
     const updatedTask = await this.taskRepository.updateTask(taskId, {assignee: { id: assignee }});
     return updatedTask;
   }

@@ -6,6 +6,7 @@ import { User } from '../user/user.entity';
 import { TaskRepository } from './task.repository';
 import { CreateTaskRequestDto, UpdateTaskRequestDto } from './dto';
 import { TaskHistoryDto } from '../task-history/dto';
+import { ETaskStatus } from 'src/types/task';
 
 @Injectable()
 export class TaskService {
@@ -45,6 +46,16 @@ export class TaskService {
         HttpStatus.BAD_REQUEST,
       );
     }
+    // Check the availability to change status
+    const isAcceptable = this.isStatusAcceptable(task.status, status);
+    console.log('isAcceptable', isAcceptable);
+
+    if (!isAcceptable) {
+      throw new HttpException(
+        `Can't change status from ${task.status} to ${status} !`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     // update task status
     const updatedTask = await this.taskRepository.updateTaskStatus(
       taskId,
@@ -74,5 +85,25 @@ export class TaskService {
 
   async getAllTasks(): Promise<Task[]> {
     return this.taskRepository.findAllTasks();
+  }
+
+  isStatusAcceptable(oldStatus: ETaskStatus, newStatus: ETaskStatus): Boolean {
+    const flow = {
+      todo: { inprogress: true },
+      inprogress: { blocked: true, inQA: true },
+      blocked: { todo: true },
+      inQA: { todo: true, done: true },
+      done: { deployed: true },
+    };
+    console.log(
+      'Flow',
+      flow[oldStatus],
+      flow[oldStatus].hasOwnProperty(newStatus),
+    );
+
+    if (flow[oldStatus].hasOwnProperty(newStatus)) {
+      return true;
+    }
+    return false;
   }
 }

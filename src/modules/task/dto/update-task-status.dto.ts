@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { HISTORY_STATUS_ERR_MESSAGE } from '../../../utilities/common';
 import { ETaskStatus } from '../../../types/task';
 
-export class UpdateTaskRequestDto {
+export class UpdateTaskStatusDto {
   @IsDefined()
   @IsNumber()
   @ApiProperty()

@@ -4,7 +4,11 @@ import { TaskHistoryService } from '../task-history/task-history.service';
 import { Task } from './task.entity';
 import { User } from '../user/user.entity';
 import { TaskRepository } from './task.repository';
-import { CreateTaskRequestDto, UpdateTaskRequestDto } from './dto';
+import {
+  CreateTaskRequestDto,
+  UpdateTaskStatusDto,
+  UpdateTaskAssigneeDto,
+} from './dto';
 import { TaskHistoryDto } from '../task-history/dto';
 import { ETaskStatus } from 'src/types/task';
 
@@ -32,10 +36,10 @@ export class TaskService {
   }
 
   async updateTaskStatus(
-    updateTaskRequestDto: UpdateTaskRequestDto,
+    UpdateTaskStatusDto: UpdateTaskStatusDto,
     userDto: User,
   ): Promise<Task> {
-    const { taskId, status } = updateTaskRequestDto;
+    const { taskId, status } = UpdateTaskStatusDto;
     const task = await this.taskRepository.findTaskById(taskId);
     if (!task) {
       throw new HttpException('Task is not exists!', HttpStatus.BAD_REQUEST);
@@ -57,10 +61,9 @@ export class TaskService {
       );
     }
     // update task status
-    const updatedTask = await this.taskRepository.updateTaskStatus(
-      taskId,
+    const updatedTask = await this.taskRepository.updateTask(taskId, {
       status,
-    );
+    });
 
     // Save history
     if (updatedTask) {
@@ -80,6 +83,22 @@ export class TaskService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+    return updatedTask;
+  }
+
+  async updateTaskAssignee(
+    taskId: number,
+    updateTaskAssigneeDto: UpdateTaskAssigneeDto,
+  ): Promise<any> {
+    const { assignee } = updateTaskAssigneeDto;
+    const task = await this.taskRepository.findTaskById(taskId);
+    if (!task) {
+      throw new HttpException('Task is not exists!', HttpStatus.BAD_REQUEST);
+    }
+    // update task status
+    const updatedTask = await this.taskRepository.updateTask(taskId, {
+      assignee,
+    });
     return updatedTask;
   }
 

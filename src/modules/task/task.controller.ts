@@ -8,14 +8,15 @@ import {
   Param,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { GetUser } from '../../utilities/user.decorator';
 import { TaskService } from './task.service';
 import { User } from '../user/user.entity';
 import { Task } from './task.entity';
 import {
   CreateTaskRequestDto,
-  UpdateTaskRequestDto,
+  UpdateTaskStatusDto,
+  UpdateTaskAssigneeDto,
   FindOneParams,
 } from './dto';
 
@@ -36,10 +37,23 @@ export class TaskController {
   @Put()
   @UseGuards(AuthGuard('jwt'))
   updateTaskStatus(
-    @Body() updateTaskRequestDto: UpdateTaskRequestDto,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
     @GetUser() userDto: User,
   ): Promise<Task> {
-    return this.taskService.updateTaskStatus(updateTaskRequestDto, userDto);
+    return this.taskService.updateTaskStatus(updateTaskStatusDto, userDto);
+  }
+
+  @Put('/assign/:id')
+  @ApiParam({ name: 'id' })
+  @UseGuards(AuthGuard('jwt'))
+  assignTask(
+    @Param() { id }: FindOneParams,
+    @Body() updateTaskAssigneeDto: UpdateTaskAssigneeDto,
+  ): Promise<Task> {
+    return this.taskService.updateTaskAssignee(
+      parseInt(id),
+      updateTaskAssigneeDto,
+    );
   }
 
   @Get('/all')

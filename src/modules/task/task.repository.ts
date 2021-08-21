@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Task } from './task.entity';
 import { ETaskStatus } from '../../types/task';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
@@ -18,8 +19,11 @@ export class TaskRepository extends Repository<Task> {
     return this.findOne(taskId);
   }
 
-  async updateTaskStatus(taskId: number, status: ETaskStatus): Promise<Task> {
-    await this.update({ id: taskId }, { status });
+  async updateTask(
+    taskId: number,
+    query: QueryDeepPartialEntity<Task>,
+  ): Promise<Task> {
+    await this.update({ id: taskId }, query);
     return this.findOne(taskId, { relations: ['creator', 'assignee'] });
   }
 

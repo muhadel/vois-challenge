@@ -1,6 +1,7 @@
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString, IsDefined } from 'class-validator';
 
 export class FindOneParams {
-  @IsNumber()
-  taskId: string;
+  @IsDefined()
+  @IsString()
+  id: string;
 }

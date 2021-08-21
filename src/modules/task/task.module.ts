@@ -6,7 +6,6 @@ import { JwtStrategy } from '../auth/jwt.strategy';
 import { Task } from './task.entity';
 import { User } from '../user/user.entity';
 import { TaskHistory } from '../task-history/task-history.entity';
-
 import { TaskRepository } from './task.repository';
 import { UserRepository } from '../user/user.repository';
 import { UserService } from '../user/user.service';

@@ -29,20 +29,14 @@ export class TaskController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Create new task' })
-  createTask(
-    @Body() createTaskRequestDto: CreateTaskRequestDto,
-    @GetUser() { id }: User,
-  ): Promise<Task> {
+  createTask(@Body() createTaskRequestDto: CreateTaskRequestDto, @GetUser() { id }: User): Promise<Task> {
     return this.taskService.createTask(createTaskRequestDto, id);
   }
 
   @Put()
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Update task status' })
-  updateTaskStatus(
-    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
-    @GetUser() userDto: User,
-  ): Promise<Task> {
+  updateTaskStatus(@Body() updateTaskStatusDto: UpdateTaskStatusDto, @GetUser() userDto: User): Promise<Task> {
     return this.taskService.updateTaskStatus(updateTaskStatusDto, userDto);
   }
 
@@ -50,14 +44,8 @@ export class TaskController {
   @ApiParam({ name: 'id' })
   @ApiOperation({ summary: 'Assign task to user' })
   @UseGuards(AuthGuard('jwt'))
-  assignTask(
-    @Param() { id }: FindOneParams,
-    @Body() updateTaskAssigneeDto: UpdateTaskAssigneeDto,
-  ): Promise<Task> {
-    return this.taskService.updateTaskAssignee(
-      parseInt(id),
-      updateTaskAssigneeDto,
-    );
+  assignTask(@Param() { id }: FindOneParams, @Body() updateTaskAssigneeDto: UpdateTaskAssigneeDto): Promise<Task> {
+    return this.taskService.updateTaskAssignee(parseInt(id),updateTaskAssigneeDto);
   }
 
   @Get('/history/:id')

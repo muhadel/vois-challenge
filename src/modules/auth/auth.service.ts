@@ -33,7 +33,7 @@ export class AuthService {
 
   async signin(signinRequestDto: SigninRequestDto): Promise<SigninResponseDto> {
     const { email, password } = signinRequestDto;
-    const user = await this.userService.findOne({ email });
+    const user = await this.userService.findOne({ email }, { select: ['id','email','password'] });
     if (!user) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }

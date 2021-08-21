@@ -1,11 +1,23 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Put,
+  Param,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { GetUser } from '../../utilities/user.decorator';
 import { TaskService } from './task.service';
 import { User } from '../user/user.entity';
 import { Task } from './task.entity';
-import { CreateTaskRequestDto } from './dto';
+import {
+  CreateTaskRequestDto,
+  UpdateTaskRequestDto,
+  FindOneParams,
+} from './dto';
 
 @Controller('task')
 @ApiTags('Task')
@@ -15,10 +27,19 @@ export class TaskController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   createTask(
-    @Body() taskDto: CreateTaskRequestDto,
+    @Body() createTaskRequestDto: CreateTaskRequestDto,
     @GetUser() { id }: User,
   ): Promise<Task> {
-    return this.taskService.createTask(taskDto, id);
+    return this.taskService.createTask(createTaskRequestDto, id);
+  }
+
+  @Put()
+  @UseGuards(AuthGuard('jwt'))
+  updateTaskStatus(
+    @Body() updateTaskRequestDto: UpdateTaskRequestDto,
+    @GetUser() userDto: User,
+  ): Promise<Task> {
+    return this.taskService.updateTaskStatus(updateTaskRequestDto, userDto);
   }
 
   @Get('/all')

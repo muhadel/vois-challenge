@@ -75,3 +75,5 @@ $ npm run test:e2e
 ## Swagger Documentation
 
 You can access Swagger documentation via [http://localhost:5000/swagger/](http://localhost:5000/swagger/)
+![image](https://user-images.githubusercontent.com/32979588/130354548-9989d93e-69c8-4c2a-ae21-ca99ef0a7e85.png)
+

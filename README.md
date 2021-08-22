@@ -42,6 +42,7 @@ The main idea of the task is to build an application to manage working tasks.
       - user/
       - task/
       - task-history/
+      - database/
 ```
 
 ## How to Install
@@ -75,3 +76,5 @@ $ npm run test:e2e
 ## Swagger Documentation
 
 You can access Swagger documentation via [http://localhost:5000/swagger/](http://localhost:5000/swagger/)
+![image](https://user-images.githubusercontent.com/32979588/130354591-689e4101-829f-461a-ad6b-3efb77bc4876.png)
+

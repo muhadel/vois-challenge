@@ -24,9 +24,4 @@ export class AuthController {
   signin(@Body() signinDto: SigninRequestDto): Promise<SigninResponseDto> {
     return this.authService.signin(signinDto);
   }
-
-  @Get('find-all')
-  findAll(): Promise<any> {
-    return this.authService.findAll();
-  }
 }

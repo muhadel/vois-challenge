@@ -5,11 +5,6 @@ import { ETaskStatus } from '../../../types/task';
 
 export class UpdateTaskStatusDto {
   @IsDefined()
-  @IsNumber()
-  @ApiProperty()
-  taskId: number;
-
-  @IsDefined()
   @ApiProperty()
   @IsEnum(ETaskStatus, { message: HISTORY_STATUS_ERR_MESSAGE })
   status: ETaskStatus;

@@ -67,6 +67,10 @@ export class TaskService {
     if (!task) {
       throw new HttpException('Task is not exists!', HttpStatus.BAD_REQUEST);
     }
+    const isAssigneeExists = await this.userService.findUserById(assignee);
+    if (!isAssigneeExists) {
+      throw new HttpException('Assignee is not exists', HttpStatus.BAD_REQUEST);
+    }
     // update task assignee
     const updatedTask = await this.taskRepository.updateTask(taskId, {assignee: { id: assignee }});
     return updatedTask;

@@ -19,8 +19,7 @@ describe('TaskController (e2e)', () => {
   let dbConnection: Connection;
   let httpServer: any;
   let userAccessToken: string;
-  let userRepository: UserRepository;
-  let createdTask: any;
+  let userCreated: any;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -33,30 +32,37 @@ describe('TaskController (e2e)', () => {
       .get<DatabaseService>(DatabaseService)
       .getDbHandle();
     httpServer = app.getHttpServer();
-    await request(httpServer).post('/auth/signup').send(userStub2);
+    const signupResponse = await request(app.getHttpServer()).post('/auth/signup').send(userStub2);
+    userCreated = signupResponse?.body?.data;
+    const signinResponse = await request(app.getHttpServer())
+    .post('/auth/signin')
+    .send({email:userStub2.email, password: userStub2.password});
+    const accessToken = signinResponse.body.accessToken;
+    userAccessToken = accessToken;
+    
   });
+
+  afterAll(async () => {
+    await dbConnection
+    .createQueryBuilder()
+    .delete()
+    .from(TaskHistory)
+    .execute();
+  await dbConnection.createQueryBuilder().delete().from(Task).execute();
+  await dbConnection.createQueryBuilder().delete().from(User).execute();
+    await Promise.all([
+      app.close(),
+    ])
+  })
 
   describe('/api/task (POST)', () => {
     it('Shoud create new task', async () => {
-      const authResponse = await request(httpServer)
-        .post('/auth/signin')
-        .send({ email: userStub2.email, password: userStub2.password });
-      const accessToken = authResponse.body.accessToken;
-      const users = await dbConnection
-        .createQueryBuilder()
-        .select()
-        .from(User, 'user')
-        .execute();
-      userAccessToken = accessToken;
-      const response = await request(app.getHttpServer())
-        .post('/task')
-        .send({ ...taskStub, assignee: users[0]?.id })
-        .set('Accept', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`);
-      console.log('response__task', response);
-
-      createdTask = response.body;
-      expect(response.status).toBe(HttpStatus.CREATED);
+      return request(app.getHttpServer())
+      .post('/task')
+      .send({ ...taskStub, assignee: userCreated?.id })
+      .set('Accept', 'application/json')
+      .set('Authorization', `Bearer ${userAccessToken}`)
+      .expect(HttpStatus.CREATED);
     });
   });
 
